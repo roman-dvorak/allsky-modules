@@ -104,8 +104,7 @@ def extract_brightness(image):
     """Extract brightness (luminance) from image"""
     # Convert to grayscale if it's a color image
     if len(image.shape) == 3:
-        # Use weighted average for better perceptual accuracy
-        # Using ITU-R BT.601 luma coefficients
+        # OpenCV uses weighted average: 0.299*R + 0.587*G + 0.114*B
         brightness = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     else:
         brightness = image
@@ -140,8 +139,9 @@ def brightnessmap(params, event):
     
     result = ""
     
-    # Check if enabled
-    if not params.get("enabled"):
+    # Check if enabled (checkbox returns empty string when unchecked)
+    enabled = params.get("enabled", "")
+    if not enabled:
         return "Brightness map generation is disabled"
     
     try:

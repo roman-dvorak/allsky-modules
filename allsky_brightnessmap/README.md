@@ -44,15 +44,22 @@ The Brightness Map module creates visual brightness maps from camera images by e
 ## Output
 
 The module creates:
-- Timestamped brightness map files in the format: `brightness_map_YYYYMMDD_HHMMSS.jpg`
+- Timestamped brightness map files in the format: `brightnessmap-YYYYMMDD_HHMMSS.jpg`
 - A `latest.jpg` file that always contains the most recent brightness map
 - A `brightnessmap.json` file containing metadata about the brightness map generation
 
 ## Output Location
 
-Brightness maps are saved to: `ALLSKY_HOME/tmp/[folder_name]/`
+Brightness maps are saved following AllSky conventions (similar to keograms and startrails):
 
-For example, with the default settings: `~/allsky/tmp/brightnessmap/`
+`ALLSKY_IMAGES/YYYYMMDD/[folder_name]/`
+
+For example, with the default settings: `~/allsky/images/20241107/brightnessmap/`
+
+This structure ensures that brightness maps are:
+- Organized by date alongside other daily outputs
+- Accessible from the AllSky web interface
+- Available for display on the public page
 
 ## Notes
 

@@ -56,7 +56,7 @@ metaData = {
         "save_to_folder": {
             "required": "false",
             "description": "Output Folder Name",
-            "help": "The name of the folder where brightness maps will be saved (relative to images directory)",
+            "help": "The name of the folder where brightness maps will be saved. Maps are stored in ALLSKY_IMAGES/YYYYMMDD/[folder_name]/ similar to keograms and startrails",
             "tab": "Settings"
         },
         "enabled": {
@@ -182,22 +182,29 @@ def brightnessmap(params, event):
         brightness_map = create_brightness_map(averaged_brightness, colormap)
         
         # Determine output path
-        # Use ALLSKY_HOME to find the images directory
-        allsky_home = s.getEnvironmentVariable("ALLSKY_HOME", fatal=False)
-        if not allsky_home:
-            # Fallback: try to find it from current working directory
-            allsky_home = os.path.expanduser("~/allsky")
-            if not os.path.exists(allsky_home):
-                s.log(0, "ERROR: Cannot determine ALLSKY_HOME path")
-                return "ERROR: Cannot determine ALLSKY_HOME path"
+        # Follow AllSky convention: save to images/YYYYMMDD/brightnessmap/
+        # Similar to how keograms and startrails are saved
+        allsky_images = s.getEnvironmentVariable("ALLSKY_IMAGES", fatal=False)
+        if not allsky_images:
+            # Fallback to ALLSKY_HOME/images
+            allsky_home = s.getEnvironmentVariable("ALLSKY_HOME", fatal=False)
+            if allsky_home:
+                allsky_images = os.path.join(allsky_home, "images")
+            else:
+                allsky_images = os.path.expanduser("~/allsky/images")
         
-        # Create output directory path
-        output_dir = os.path.join(allsky_home, "tmp", folder_name)
+        # Create date-based directory structure (YYYYMMDD)
+        current_date = datetime.now().strftime("%Y%m%d")
+        date_dir = os.path.join(allsky_images, current_date)
+        
+        # Create brightness map subdirectory
+        output_dir = os.path.join(date_dir, folder_name)
         s.checkAndCreateDirectory(output_dir)
         
         # Generate filename with timestamp
+        # Use AllSky convention: brightnessmap-YYYYMMDD_HHMMSS.jpg
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_filename = f"brightness_map_{timestamp}.jpg"
+        output_filename = f"brightnessmap-{timestamp}.jpg"
         output_path = os.path.join(output_dir, output_filename)
         
         # Save the brightness map

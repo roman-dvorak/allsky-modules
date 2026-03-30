@@ -63,6 +63,7 @@ This option will display information about the system.
 | allsky_ai | Determines Cloud Cover using AI|
 | allsky_boilerplate | Example Boilerplate module |
 | allsky_border | Expands a captured image adding a border |
+| allsky_brightnessmap | Creates brightness maps from camera images with frame averaging |
 | allsky_dewheater | Managed a dewheater |
 | allsky_discordsend | Send images to Discord channels |
 | allsky_fans | Controls the Pi Fans |
